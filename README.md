@@ -9,9 +9,13 @@
 
 ## Реализация
 
-* Ruby 3.1
+* Ruby 3.1.2
 
 * Rails 7
 
 * Bootstrap 5
 
+## Кто
+
+Олег Дулецкий 
+OlegDuletsky@Gmail.Com
