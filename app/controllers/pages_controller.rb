@@ -5,6 +5,7 @@ class PagesController < ApplicationController
 
   def create
     @anecdote = params[:anecdote]
+
     render :index
   end
 end

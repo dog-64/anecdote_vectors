@@ -1,10 +1,12 @@
 <%= form_with(url: { action: "create" }, local: true, html: { class: "m-4" }) do |form| %>
   <div class="mb-3">
-    <%= form.text_area :anecdote, class: "form-control", placeholder: "Введите анекдот", rows: 5 %>
+    <%= form.text_area :anecdote,
+                       class: "form-control",
+                       placeholder: "Введите анекдот",
+                       rows: 5 %>
   </div>
   <%= form.submit "Добавить", class: "btn btn-primary" %>
 <% end %>
-
 <% if @anecdote.present? %>
   <div class="alert alert-success mt-3">
     <strong>Ваш анекдот:</strong><br>
