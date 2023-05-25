@@ -64,3 +64,5 @@ group :test do
   gem "selenium-webdriver"
   gem "webdrivers"
 end
+
+gem 'bootstrap', '~> 5.0', '>= 5.0.3'
