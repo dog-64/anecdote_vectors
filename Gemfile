@@ -36,11 +36,12 @@ gem "redis", "~> 4.0"
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[ mingw mswin x64_mingw jruby ]
 
-# Reduces boot times through caching; required in config/boot.rb
-gem "bootsnap", require: false
+# Reduces boot times through caching; gemd in config/boot.rb
+gem 'bootsnap' #, gem: false
 
 # Use Sass to process CSS
-# gem "sassc-rails"
+# TODO: отключить потом - долго компилится
+gem 'sassc-rails'
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
@@ -68,7 +69,20 @@ group :test do
   gem "webdrivers"
 end
 
-gem 'bootstrap', '~> 5.0', '>= 5.0.3'
+# gem 'bootstrap', '~> 5.0', '>= 5.0.3'
 
 gem 'slim'
 gem 'slim-rails'
+
+gem 'dry-initializer', '~> 3.0'
+gem 'dry-monads', '~> 1.3'
+gem 'dry-struct', '~> 1.4'
+gem 'dry-types', '~> 1.5'
+
+gem 'config' # настройки в yaml
+
+gem 'nokogiri'
+gem 'pinecone'
+gem 'openai'
+gem 'open-uri'
+gem "ruby-openai"

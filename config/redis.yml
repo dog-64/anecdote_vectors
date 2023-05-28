@@ -1,0 +1,8 @@
+development: &default
+  url: <%= Settings.redis.url %>
+
+test:
+  <<: *default
+
+production:
+  <<: *default

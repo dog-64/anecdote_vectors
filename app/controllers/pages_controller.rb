@@ -1,11 +1,19 @@
 class PagesController < ApplicationController
   def index
-    @anecdote = ""
+    search
   end
 
-  def create
-    @anecdote = params[:anecdote]
+  # def create
+  #   redirect_to root_path(search:, anecdotes:)
+  # end
 
-    render :index
+  private
+
+  def search
+    @search ||= params.to_unsafe_h.fetch(:search, '')
+  end
+
+  def anecdotes
+    @anecdotes ||= Anecdotes::SearchService.call(search)
   end
 end

@@ -1,0 +1,11 @@
+default_url_host: <%= ENV.fetch('DEFAULT_URL_HOST', 'localhost') %>
+
+openai:
+  key: <%= ENV.fetch('OPEN_AI_KEY', '') %>
+
+pinecone:
+  key: <%= ENV.fetch('PINECONE_API_KEY', '') %>
+  environment: <%= ENV.fetch('PINECONE_ENVIRONMENT', '') %>
+
+redis:
+  url: <%= ENV.fetch('REDIS_URL') { 'redis://127.0.0.1:6379/7' } %>

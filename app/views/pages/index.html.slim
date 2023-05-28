@@ -1,0 +1,22 @@
+- cache ['form_result', @search], expires_in: 1.hour do
+  - binding.pry
+  - @anecdotes = Anecdotes::SearchService.call(@search)
+  = form_with url: { action: 'index' },
+          data: { turbolinks: false, turbo: false },
+          method: :get,
+          local: true,
+          html: { class: 'm-4', 'data-turbo': false } do |form|
+    .mb-3
+      = form.text_field :search,
+              value: @search,
+              class: 'form-control',
+              placeholder: "Введите что-ть для поиска анекдота"
+    = form.submit "Искать", class: "btn btn-primary"
+
+  - if @anecdotes.present?
+    ul
+      - @anecdotes.each do |anecdote|
+        li
+          = anecdote['metadata']['html']
+          |  /
+          = anecdote['score']
