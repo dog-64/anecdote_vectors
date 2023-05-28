@@ -1,0 +1,38 @@
+version: '3'
+
+x-app: &default-app
+  environment:
+    - RAILS_ENV=production
+    - RAILS_MASTER_KEY=${RAILS_MASTER_KEY}
+    - SECRET_KEY_BASE=${SECRET_KEY_BASE}
+    - WEB_CONCURRENCY=2
+    - RAILS_MAX_THREADS=30
+    - REDIS_URL=redis://redis:6379/7
+    - DEFAULT_URL_HOST=${DEFAULT_URL_HOST}
+  image: dockerhub.duletsky.ru/anecdote_vectors:latest
+  #image: registry.duletsky.ru/dog/anecdote_vectors:master-843
+  volumes:
+    - ./_src:/usr/share/import:ro
+services:
+  app:
+    <<: *default-app
+    restart: always
+    depends_on:
+      - redis
+    build: .
+    command: bundle exec puma -C config/puma.rb
+    ports:
+      - "3001:3000"
+    volumes:
+      - ./log/requests:/app/log/requests
+      - ./config/settings:/app/config/settings
+  redis:
+    restart: always
+    image: 'redis:6-alpine'
+    command: redis-server
+    ports:
+      - '6378:6379'
+    volumes:
+      - 'redis:/data'
+volumes:
+  redis:
