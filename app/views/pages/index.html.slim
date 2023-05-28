@@ -1,22 +1,64 @@
 - cache ['form_result', @search], expires_in: 1.hour do
-  - binding.pry
   - @anecdotes = Anecdotes::SearchService.call(@search)
   = form_with url: { action: 'index' },
           data: { turbolinks: false, turbo: false },
           method: :get,
           local: true,
           html: { class: 'm-4', 'data-turbo': false } do |form|
-    .mb-3
-      = form.text_field :search,
-              value: @search,
-              class: 'form-control',
-              placeholder: "Введите что-ть для поиска анекдота"
-    = form.submit "Искать", class: "btn btn-primary"
+    .row.g-3.align-items-center
+      .col
+        = form.text_field :search,
+                value: @search,
+                class: 'form-control',
+                placeholder: "Введите что-ть для поиска анекдота",
+                autofocus: true
+      .col-auto
+        = form.submit "Искать", class: "btn btn-primary"
 
   - if @anecdotes.present?
+    H2 Нашлось
     ul
       - @anecdotes.each do |anecdote|
         li
           = anecdote['metadata']['html']
-          |  /
-          = anecdote['score']
+          span.text-secondary
+            |  /
+            = anecdote['score']
+H2 Примеры
+.row.row-cols-1.row-cols-md-2.row-cols-lg-3.g-4
+  .col
+    .card.d-flex.flex-fill.align-items-stretch(style="width: 18rem;")
+      .card-body
+        h5.card-title Про пса и саппорт
+        p.card-text конкретно слов запроса нет в тексте найденного анекдота
+        a.card-link(href="/?search=про+пса+и+саппорт") показать
+  .col
+    .card.d-flex.flex-fill.align-items-stretch(style="width: 18rem;")
+      .card-body
+        h5.card-title Про сбереженья
+        p.card-text конечно, регистр текста не играет
+        a.card-link(href="/?search=Про+сбереженья") показать
+  .col
+    .card.d-flex.flex-fill.align-items-stretch(style="width: 18rem;")
+      .card-body
+        h5.card-title About a Dog and Support
+        p.card-text ищет по вопросам на другом, по сравнению с текстом ответа, языке
+        a.card-link(href="/?search=About+a+Dog+and+Support") показать
+  .col
+    .card.d-flex.flex-fill.align-items-stretch(style="width: 18rem;")
+      .card-body
+        h5.card-title перекрасно
+        p.card-text описки (перекрасно) не проблема
+        a.card-link(href="/?search=перекрасно") показать
+  .col
+    .card.d-flex.flex-fill.align-items-stretch(style="width: 18rem;")
+      .card-body
+        h5.card-title как устроены вычислительные машины
+        p.card-text иной раз прям по смыслу выдаёт
+        a.card-link(href="/?search=как+устроены+вычислительные+машины") показать
+H2 Как это работает
+ol
+  li по каждому анекдоту делается OpenAi embedding (это 1536-размерный вектор чисел). Через их Api
+  li сохраняется в Pinecone векторную БД
+  li запрос на поиск тоже превращается в embedding
+  li делается запрос в Pinecone на поиск ближайших к вопросу векторов
