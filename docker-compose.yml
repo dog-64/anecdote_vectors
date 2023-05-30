@@ -9,6 +9,9 @@ x-app: &default-app
     - RAILS_MAX_THREADS=30
     - REDIS_URL=redis://redis:6379/7
     - DEFAULT_URL_HOST=${DEFAULT_URL_HOST}
+    - OPEN_AI_KEY=${OPEN_AI_KEY}
+    - PINECONE_API_KEY=${PINECONE_API_KEY}
+    - PINECONE_ENVIRONMENT=${PINECONE_ENVIRONMENT}
   image: dockerhub.duletsky.ru/anecdote_vectors:latest
   #image: registry.duletsky.ru/dog/anecdote_vectors:master-843
   volumes:
@@ -22,7 +25,7 @@ services:
     build: .
     command: bundle exec puma -C config/puma.rb
     ports:
-      - "3001:3000"
+      - "3007:3000"
     volumes:
       - ./log/requests:/app/log/requests
       - ./config/settings:/app/config/settings

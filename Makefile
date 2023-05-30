@@ -110,3 +110,6 @@ env-source:
 
 recreate_test:
 	bundle exec rake db:drop db:create db:migrate RAILS_ENV=test
+
+sync:
+	rsync -LvzP -r  --exclude 'vendor' --exclude 'tmp' ./*.* aorus.local:~/anecdote_vectors
