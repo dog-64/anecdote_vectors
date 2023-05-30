@@ -86,3 +86,5 @@ gem 'pinecone'
 gem 'openai'
 gem 'open-uri'
 gem "ruby-openai"
+
+gem 'rack-attack'

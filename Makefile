@@ -113,3 +113,6 @@ recreate_test:
 
 sync:
 	rsync -LvzP -r  --exclude 'vendor' --exclude 'tmp' ./*.* aorus.local:~/anecdote_vectors
+
+ab:
+	ab -n 10000 -c 4 http://localhost:3000/
