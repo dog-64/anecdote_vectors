@@ -20,12 +20,12 @@
     ul
       - @anecdotes.each do |anecdote|
         li
-          = anecdote['metadata']['html']
+          = raw anecdote['metadata']['html']
           span.text-secondary
             |  /
             = anecdote['score']
 H2 Примеры
-.row.row-cols-1.row-cols-md-2.row-cols-lg-3.g-4
+.row.g-4.md-4
   .col
     .card.d-flex.flex-fill.align-items-stretch(style="width: 18rem;")
       .card-body
@@ -42,7 +42,7 @@ H2 Примеры
     .card.d-flex.flex-fill.align-items-stretch(style="width: 18rem;")
       .card-body
         h5.card-title About a Dog and Support
-        p.card-text ищет по вопросам на другом, по сравнению с текстом ответа, языке
+        p.card-text ищет по вопросам на английском по русским текстам
         a.card-link(href="/?search=About+a+Dog+and+Support") показать
   .col
     .card.d-flex.flex-fill.align-items-stretch(style="width: 18rem;")
@@ -56,6 +56,12 @@ H2 Примеры
         h5.card-title как устроены вычислительные машины
         p.card-text иной раз прям по смыслу выдаёт
         a.card-link(href="/?search=как+устроены+вычислительные+машины") показать
+  .col
+    .card.d-flex.flex-fill.align-items-stretch(style="width: 18rem;")
+      .card-body
+        h5.card-title кот и демократия
+        p.card-text демократия и выборы это точно не синонимы
+        a.card-link(href="/?search=кот+и+демократия") показать
 H2 Как это работает
 ol
   li по каждому анекдоту делается OpenAi embedding (это 1536-размерный вектор чисел). Через их Api
