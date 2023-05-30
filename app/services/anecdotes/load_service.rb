@@ -1,3 +1,5 @@
+# Загрузка анекдотов
+#  (134..2021).to_a.each {|j| puts j ; Anecdotes::LoadService.call(j) ; sleep rand(60) }
 module Anecdotes
   class LoadService < BaseService
     param :page_number, type: Types::Coercible::Integer
