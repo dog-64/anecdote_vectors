@@ -1,4 +1,5 @@
-- cache ['form_result', @search], expires_in: 1.hour do
+/ - cache ['form_result', @search], expires_in: 1.hour do
+- cache ['form_result', @search], expires_in: 0.hour do
   - @anecdotes = Anecdotes::SearchService.call(@search)
   = form_with url: { action: 'index' },
           data: { turbolinks: false, turbo: false },
@@ -20,7 +21,9 @@
     ul
       - @anecdotes.each do |anecdote|
         li
-          = raw anecdote['metadata']['html']
+          / TODO: вынести в сервис или метод
+          / TODO: при нормальной загрузке текстов - не нужно
+          = raw anecdote['metadata']['html'].gsub(/(?:<br>){2,}/, '<br>').gsub(/(?:<br>\n){2,}/, '<br>\n')
           span.text-secondary
             |  /
             = anecdote['score']
