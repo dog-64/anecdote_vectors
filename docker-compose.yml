@@ -16,6 +16,31 @@ x-app: &default-app
   #image: registry.duletsky.ru/dog/anecdote_vectors:master-843
   volumes:
     - ./_src:/usr/share/import:ro
+  logging:
+    driver: loki
+    options:
+      loki-url: http://10.0.1.115:4100/loki/api/v1/push
+      loki-external-labels: job=dockercomposelogs,owner=dog
+      mode: non-blocking
+      max-buffer-size: 4m
+      loki-retries: "3"
+      loki-pipeline-stages: |
+        - regex:
+            expression: '(?P<controller>\w+)Controller#(?P<kind>)'
+        - labels:
+            controller:
+        - regex:
+            expression: '(?P<kind>Controller)#'
+        - labels:
+            kind:
+        - regex:
+            expression: '(?P<controller_action>\w+Controller#\w+)'
+        - labels:
+            controller_action:
+        - regex:
+            expression: '\[(?P<kind>\w+)\]'
+        - labels:
+            kind:
 services:
   app:
     <<: *default-app

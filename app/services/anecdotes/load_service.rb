@@ -5,42 +5,14 @@ module Anecdotes
     param :page_number, type: Types::Coercible::Integer
 
     def call
-      openai_token = Settings.openai.key
-      openai_client = OpenAI::Client.new(access_token: openai_token)
+      # заполняем БД
+      pinecone_index.upsert(vectors: [meta_vector], namespace: 'anekdot')
+    end
 
-      pinecone ||= begin
-        Pinecone.configure do |config|
-          config.api_key = Settings.pinecone.key
-          config.environment = Settings.pinecone.environment
-        end
+    private
 
-        Pinecone::Client.new
-      end
-      # TODO: вынести в Settings
-      pc_index = pinecone.index('example-index')
-
-      url = "http://bashorg.org/page/#{page_number}/"
-      # url = 'http://bashorg.org/page/6/'
-      html = URI.open(url)
-      doc = Nokogiri::HTML(html, "UTF-8")
-      anekdots = doc.css('.q').map do |quote|
-        id = quote.css('.vote a').first['href'].scan(/\d+/).first.to_i
-        html = quote.css('.quote')[0].children.map(&:text).reject{|c| c.empty?}.join("<br/>\n")
-
-        { id: id, html: html }
-      end
-
-      vectors = anekdots.map do |anekdot|
-        vector = openai_client.embeddings(
-          parameters: {
-            model: 'text-embedding-ada-002',
-            input: anekdot[:html]
-          }
-        )
-        vector['data'][0]['embedding']
-      end
-
-      meta_vector = anekdots.map.with_index do |anekdot, j|
+    def meta_vector
+      anekdots.map.with_index do |anekdot, j|
         {
           id: anekdot[:id].to_s,
           metadata: {
@@ -50,9 +22,53 @@ module Anecdotes
           values: vectors[j]
         }
       end
+    end
 
-      # заполняем БД
-      pc_index.upsert(vectors: [meta_vector], namespace: 'anekdot')
+    def vectors
+      anecdotes.map do |anekdot|
+        vector = openai_client.embeddings(
+          parameters: {
+            model: 'text-embedding-ada-002',
+            input: anekdot[:html]
+          }
+        )
+        vector['data'][0]['embedding']
+      rescue
+        puts "#{__FILE__}:#{__LINE__} | vector=#{vector.inspect}"
+        puts "#{__FILE__}:#{__LINE__} | sleep"
+        sleep(5)
+        retry
+      end
+    end
+
+    def anecdotes
+      url = "http://bashorg.org/page/#{page_number}/"
+      html = URI.open(url)
+      doc = Nokogiri::HTML(html, "UTF-8")
+      doc.css('.q').map do |quote|
+        id = quote.css('.vote a').first['href'].scan(/\d+/).first.to_i
+        html = quote.css('.quote')[0].children.map(&:text).reject { |c| c.empty? }.join("<br/>\n")
+
+        { id: id, html: html }
+      end
+    end
+
+    def pinecone_index
+      pinecone ||= begin
+        Pinecone.configure do |config|
+          config.api_key = Settings.pinecone.key
+          config.environment = Settings.pinecone.environment
+        end
+
+        Pinecone::Client.new
+      end
+      # TODO: вынести в Settings
+      pinecone.index('example-index')
+    end
+
+    def openai_client
+      openai_token = Settings.openai.key
+      OpenAI::Client.new(access_token: openai_token)
     end
   end
 end

@@ -1,6 +1,7 @@
 / - cache ['form_result', @search], expires_in: 1.hour do
 - cache ['form_result', @search], expires_in: 0.hour do
   - @anecdotes = Anecdotes::SearchService.call(@search)
+  - binding.pry
   = form_with url: { action: 'index' },
           data: { turbolinks: false, turbo: false },
           method: :get,
@@ -38,9 +39,9 @@ H2 Примеры
   .col
     .card.d-flex.flex-fill.align-items-stretch(style="width: 18rem;")
       .card-body
-        h5.card-title Про сбереженья
-        p.card-text конечно, регистр текста не играет
-        a.card-link(href="/?search=Про+сбереженья") показать
+        h5.card-title Обратный смысл
+        p.card-text ищем про "вспомнить", а находит про "не забыть"
+        a.card-link(href="/?search=вспомнить") показать
   .col
     .card.d-flex.flex-fill.align-items-stretch(style="width: 18rem;")
       .card-body
@@ -51,7 +52,7 @@ H2 Примеры
     .card.d-flex.flex-fill.align-items-stretch(style="width: 18rem;")
       .card-body
         h5.card-title перекрасно
-        p.card-text описки (перекрасно) не проблема
+        p.card-text описки (перекрасно -> прекрасно) не проблема
         a.card-link(href="/?search=перекрасно") показать
   .col
     .card.d-flex.flex-fill.align-items-stretch(style="width: 18rem;")
