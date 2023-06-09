@@ -12,7 +12,7 @@ module Anecdotes
     private
 
     def meta_vector
-      anekdots.map.with_index do |anekdot, j|
+      anecdotes.map.with_index do |anekdot, j|
         {
           id: anekdot[:id].to_s,
           metadata: {
