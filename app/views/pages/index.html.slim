@@ -30,16 +30,16 @@
 H2 Примеры
 .row.g-4.md-4
   = render partial: 'card', locals: { \
-      title: 'Про пса и саппорт', \
-      text: 'конкретно слов запроса нет в тексте найденного анекдота' }
+      title: 'про пса и саппорт', \
+      text: 'конкретно слов запроса нет в тексте найденного анекдота'}
   = render partial: 'card', locals: { \
-      title: 'Не забывай', \
+      title: 'не забывай', \
       text: 'ищем про "вспомнить", а находит и про "не забыть"' }
   = render partial: 'card', locals: { \
       title: 'как устроены вычислительные машины', \
       text: 'неожиданно' }
   = render partial: 'card', locals: { \
-      title: 'About a Dog and Support', \
+      title: 'about a Dog and Support', \
       text: 'вопрос на английском, ответ по-русски' }
   = render partial: 'card', locals: { \
       title: 'перекрасно', \
@@ -48,11 +48,14 @@ H2 Примеры
       title: 'кот и демократия', \
       text: 'демократия и выборы это точно не синонимы' }
   = render partial: 'card', locals: { \
-      title: 'Postgres', \
+      title: 'postgres', \
       text: 'чисто Андрея Булыгина порадовать' }
   = render partial: 'card', locals: { \
-      title: 'Альфа-тестер', \
+      title: 'альфа-тестер', \
       text: 'qa в нашей жизни' }
+  = render partial: 'card', locals: { \
+      title: 'вайфай не работает', \
+      text: 'и в авиации' }
 
 H2 Как это работает
 ol
