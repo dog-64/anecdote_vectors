@@ -29,54 +29,31 @@
             = anecdote['id']
 H2 Примеры
 .row.g-4.md-4
-  .col
-    .card.d-flex.flex-fill.align-items-stretch(style="width: 18rem;")
-      .card-body
-        h5.card-title Про пса и саппорт
-        p.card-text конкретно слов запроса нет в тексте найденного анекдота
-        a.card-link(href="/?search=про+пса+и+саппорт") показать
-  .col
-    .card.d-flex.flex-fill.align-items-stretch(style="width: 18rem;")
-      .card-body
-        h5.card-title Не забывай
-        p.card-text ищем про "вспомнить", а находит и про "не забыть"
-        a.card-link(href="/?search=вспомнить") показать
-  .col
-    .card.d-flex.flex-fill.align-items-stretch(style="width: 18rem;")
-      .card-body
-        h5.card-title About a Dog and Support
-        p.card-text вопрос на английском, ответ по-русски
-        a.card-link(href="/?search=About+a+Dog+and+Support") показать
-  .col
-    .card.d-flex.flex-fill.align-items-stretch(style="width: 18rem;")
-      .card-body
-        h5.card-title перекрасно
-        p.card-text описки (перекрасно -> прекрасно) не проблема
-        a.card-link(href="/?search=перекрасно") показать
-  .col
-    .card.d-flex.flex-fill.align-items-stretch(style="width: 18rem;")
-      .card-body
-        h5.card-title как устроены вычислительные машины
-        p.card-text неожиданно
-        a.card-link(href="/?search=как+устроены+вычислительные+машины") показать
-  .col
-    .card.d-flex.flex-fill.align-items-stretch(style="width: 18rem;")
-      .card-body
-        h5.card-title кот и демократия
-        p.card-text демократия и выборы это точно не синонимы
-        a.card-link(href="/?search=кот+и+демократия") показать
-  .col
-    .card.d-flex.flex-fill.align-items-stretch(style="width: 18rem;")
-      .card-body
-        h5.card-title Postgres
-        p.card-text чисто Андрея Булыгина порадовать
-        a.card-link(href="/?search=Postgres") показать
-  .col
-    .card.d-flex.flex-fill.align-items-stretch(style="width: 18rem;")
-      .card-body
-        h5.card-title Альфа-тестер
-        p.card-text qa в нашей жизни
-        a.card-link(href="/?search=альфа-тестер") показать
+  = render partial: 'card', locals: { \
+      title: 'Про пса и саппорт', \
+      text: 'конкретно слов запроса нет в тексте найденного анекдота' }
+  = render partial: 'card', locals: { \
+      title: 'Не забывай', \
+      text: 'ищем про "вспомнить", а находит и про "не забыть"' }
+  = render partial: 'card', locals: { \
+      title: 'как устроены вычислительные машины', \
+      text: 'неожиданно' }
+  = render partial: 'card', locals: { \
+      title: 'About a Dog and Support', \
+      text: 'вопрос на английском, ответ по-русски' }
+  = render partial: 'card', locals: { \
+      title: 'перекрасно', \
+      text: 'описки (перекрасно -> прекрасно) не проблема' }
+  = render partial: 'card', locals: { \
+      title: 'кот и демократия', \
+      text: 'демократия и выборы это точно не синонимы' }
+  = render partial: 'card', locals: { \
+      title: 'Postgres', \
+      text: 'чисто Андрея Булыгина порадовать' }
+  = render partial: 'card', locals: { \
+      title: 'Альфа-тестер', \
+      text: 'qa в нашей жизни' }
+
 H2 Как это работает
 ol
   li по каждому анекдоту делается OpenAi embedding (это 1536-размерный вектор чисел). Через их Api
