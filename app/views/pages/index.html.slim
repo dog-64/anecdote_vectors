@@ -1,7 +1,6 @@
 / - cache ['form_result', @search], expires_in: 1.hour do
 - cache ['form_result', @search], expires_in: 0.hour do
   - @anecdotes = Anecdotes::SearchService.call(@search)
-  - binding.pry
   = form_with url: { action: 'index' },
           data: { turbolinks: false, turbo: false },
           method: :get,
@@ -22,12 +21,12 @@
     ul
       - @anecdotes.each do |anecdote|
         li
-          / TODO: вынести в сервис или метод
-          / TODO: при нормальной загрузке текстов - не нужно
-          = raw anecdote['metadata']['html'].gsub(/(?:<br>){2,}/, '<br>').gsub(/(?:<br>\n){2,}/, '<br>\n')
+          = raw html(anecdote)
           span.text-secondary
             |  /
             = anecdote['score']
+            |  /
+            = anecdote['id']
 H2 Примеры
 .row.g-4.md-4
   .col
@@ -46,7 +45,7 @@ H2 Примеры
     .card.d-flex.flex-fill.align-items-stretch(style="width: 18rem;")
       .card-body
         h5.card-title About a Dog and Support
-        p.card-text ищет по вопросам на английском по русским текстам
+        p.card-text вопрос на английском, ответ по-русски
         a.card-link(href="/?search=About+a+Dog+and+Support") показать
   .col
     .card.d-flex.flex-fill.align-items-stretch(style="width: 18rem;")
@@ -58,7 +57,7 @@ H2 Примеры
     .card.d-flex.flex-fill.align-items-stretch(style="width: 18rem;")
       .card-body
         h5.card-title как устроены вычислительные машины
-        p.card-text иной раз прям по смыслу выдаёт
+        p.card-text неожиданно
         a.card-link(href="/?search=как+устроены+вычислительные+машины") показать
   .col
     .card.d-flex.flex-fill.align-items-stretch(style="width: 18rem;")
@@ -77,7 +76,7 @@ H2 Примеры
       .card-body
         h5.card-title Альфа-тестер
         p.card-text qa в нашей жизни
-        a.card-link(href="/?search=Postgres") показать
+        a.card-link(href="/?search=альфа-тестер") показать
 H2 Как это работает
 ol
   li по каждому анекдоту делается OpenAi embedding (это 1536-размерный вектор чисел). Через их Api
