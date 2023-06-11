@@ -12,7 +12,9 @@ module Anecdotes
     private
 
     def meta_vector
+      puts "#{__FILE__}:#{__LINE__} | meta_vector"
       anecdotes.map.with_index do |anekdot, j|
+        puts "#{__FILE__}:#{__LINE__} | j=#{j.inspect}"
         {
           id: anekdot[:id].to_s,
           metadata: {
@@ -42,14 +44,17 @@ module Anecdotes
     end
 
     def anecdotes
-      url = "http://bashorg.org/page/#{page_number}/"
-      html = URI.open(url)
-      doc = Nokogiri::HTML(html, "UTF-8")
-      doc.css('.q').map do |quote|
-        id = quote.css('.vote a').first['href'].scan(/\d+/).first.to_i
-        html = quote.css('.quote')[0].children.map(&:text).reject { |c| c.empty? }.join("<br/>\n")
+      puts "#{__FILE__}:#{__LINE__} | "
+      @anecdotes ||= begin
+        url = "http://bashorg.org/page/#{page_number}/"
+        html = URI.open(url)
+        doc = Nokogiri::HTML(html, "UTF-8")
+        doc.css('.q').map do |quote|
+          id = quote.css('.vote a').first['href'].scan(/\d+/).first.to_i
+          html = quote.css('.quote')[0].children.map(&:text).reject { |c| c.empty? }.join("<br/>\n")
 
-        { id: id, html: html }
+          { id: id, html: html }
+        end
       end
     end
 
