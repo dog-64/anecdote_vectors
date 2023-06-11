@@ -112,7 +112,10 @@ recreate_test:
 	bundle exec rake db:drop db:create db:migrate RAILS_ENV=test
 
 sync:
-	rsync -avv --ignore-existing  --exclude '_src' --exclude-from=.rsyncignore ./ aorus.local:~/anecdote_vectors
+	rsync -LvzP -r --exclude 'vendor' --exclude 'tmp' ./* aorus.local:~/anecdote_vectors
+	#rsync -LvzP -r  --exclude '_src' --exclude-from=.rsyncignore ./ aorus.local:~/anecdote_vectors
+	#rsync -avR --exclude '_src' --exclude-from=.rsyncignore ./ aorus.local:~/anecdote_vectors
+#	rsync -avv --ignore-existing  --exclude '_src' --exclude-from=.rsyncignore ./ aorus.local:~/anecdote_vectors
 
 ab:
 	ab -n 10000 -c 4 http://localhost:3000/

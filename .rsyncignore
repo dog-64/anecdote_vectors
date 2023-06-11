@@ -3,3 +3,6 @@ vendor/**
 tmp/**
 test
 log
+.git
+.idea
+.DS_STORE
